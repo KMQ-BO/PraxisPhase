@@ -1,34 +1,20 @@
 
-import shutil
 import os
-
-shutil.copy("/content/pylaia-iam/model", "model")
-shutil.copy("/content/pylaia-iam/weights.ckpt", "weights.ckpt")
-shutil.copy("/content/pylaia-iam/syms.txt", "syms.txt")
-
-print("Done")
-
-from google.colab import files
 from PIL import Image
 
-print("Bitte lade deine Bilder hoch:")
-uploaded = files.upload()   
-
-target_height = 128
+folder = "neu_test" 
 processed_images = []
 
-for filename in uploaded.keys():
-    img = Image.open(filename).convert("L") 
+for filename in os.listdir(folder):
+    path = folder + "/" + filename
+    img = Image.open(path).convert("L") 
 
-  
-    factor = target_height / img.height
+    factor = 128 / img.height
     new_width = int(img.width * factor)
+    img = img.resize((new_width, 128))
 
    
-    img = img.resize((new_width, target_height))
-
-   
-    new_name = filename.replace(".png", "_fixed.png")
+    new_name = filename.replace(".png", "_neu.png")
     img.save(new_name)
 
     processed_images.append(new_name)
@@ -36,19 +22,16 @@ for filename in uploaded.keys():
 
 
 with open("img_list.txt", "w") as f:
-    f.write("\n".join(processed_images) + "\n")
-
-
-print("img_list.txt erstellt.")
-
+    for name in processed_images :
+        f.write( name + "\n")
 
 print("Starte PyLaia...")
 
 !pylaia-htr-decode-ctc \
   --common.experiment_dirname . \
-  --common.model_filename model \
-  --common.checkpoint weights.ckpt \
-  syms.txt \
+  --common.model_filename pylaia-iam/model \
+  --common.checkpoint pylaia-iam/weights.ckpt \
+  pylaia-iam/syms.txt \
   img_list.txt
 
 print("Fertig!")
