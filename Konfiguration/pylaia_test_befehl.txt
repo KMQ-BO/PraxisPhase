@@ -1,0 +1,6 @@
+pylaia-htr-decode-ctc  \
+  --common.experiment_dirname . \
+  --common.model_filename pylaia-iam/model \
+  --common.checkpoint pylaia-iam/weights.ckpt \
+  pylaia-iam/syms.txt \
+  img_list.txt
