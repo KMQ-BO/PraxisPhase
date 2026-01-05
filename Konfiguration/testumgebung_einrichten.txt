@@ -1,0 +1,3 @@
+1.Prüfen welche Python Version auf dem Gerät vorhanden ist -> PyLaia braucht die Version 3.10.
+2.PyLaia soll intstalliesiert werden -> pip install pylaia
+3.Das englische Model herunterladen -> https://huggingface.co/Teklia/pylaia-iam/tree/main 
