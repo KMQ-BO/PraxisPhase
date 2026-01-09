@@ -29,7 +29,6 @@ for src in paths:
 
     rel = os.path.relpath(src, INPUT_DIR)
     dst = os.path.join(OUTPUT_DIR, rel)
-    os.makedirs(os.path.dirname(dst), exist_ok=True)
 
     cv2.imwrite(dst, out)
 
