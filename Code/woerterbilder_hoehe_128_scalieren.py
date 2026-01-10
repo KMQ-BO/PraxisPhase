@@ -9,16 +9,18 @@ TARGET_H = 128
 exts = ("*.png","*.jpg")
 paths = []
 
+# Dateien im INPUT_DIR sammeln
 for e in exts:
     paths += glob.glob(os.path.join(INPUT_DIR, e))
 
+# Jedes Bild einzeln bearbeiten
 for src in paths:
     img = cv2.imread(src, cv2.IMREAD_GRAYSCALE)
     
     h, w = img.shape[:2]
 
     scale = TARGET_H / float(h)
-    new_w = max(1, int(round(w * scale)))
+    new_w =int(round(w * scale))
 
     if scale < 1.0:
         interp = cv2.INTER_AREA 
@@ -27,8 +29,8 @@ for src in paths:
         
     out = cv2.resize(img, (new_w, TARGET_H), interpolation=interp)
 
-    rel = os.path.relpath(src, INPUT_DIR)
-    dst = os.path.join(OUTPUT_DIR, rel)
+    rel = os.path.relpath(src, INPUT_DIR)  # Pfad bestimmen
+    dst = os.path.join(OUTPUT_DIR, rel)    # Zielpfad bauen
 
     cv2.imwrite(dst, out)
 
