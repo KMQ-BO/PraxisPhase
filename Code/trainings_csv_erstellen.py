@@ -7,18 +7,18 @@ df = df.rename(columns={"Text": "text"})
 folders = ["words","words_2","words_3","words_4","words_5","words_6","words_7"]
 
 rows = []
-
+# Jeden Text durchgehen
 for i, text in enumerate(df["text"], start=1):
     image_name = f"word_{i:04}"
 
-
+ # Für jeden Ordner Datensatz erstellen
     for folder in folders:
         rows.append({
             "image": f"{folder}/{image_name}",
             "text": text
         })
 
-final_df = pd.DataFrame(rows)
+final_df = pd.DataFrame(rows) #  DataFrame machen
 final_df.to_csv("train.csv", index=False, encoding="utf-8-sig")
 
 print("Done")
