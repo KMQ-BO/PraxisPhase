@@ -5,26 +5,28 @@ import os
 os.makedirs("words", exist_ok=True)
 
 word_count = 0
-
+# Alle Seiten  durchgehen
 for page in range(1, 25):
     img = cv2.imread(f"R_H/page_{page:03}_hw.png", 0)
 
-    _, bw = cv2.threshold(img, 200, 255, cv2.THRESH_BINARY_INV )
-
+    _, bw = cv2.threshold(img, 200, 255, cv2.THRESH_BINARY_INV )  # In Schwarz und Weiß umwandeln
+    
+    # horizontale Linien -> sehr breit, nur 2 Pixel hoch
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (img.shape[1], 2))
-    h_lines = cv2.morphologyEx(bw, cv2.MORPH_OPEN, kernel)
+    h_lines = cv2.morphologyEx(bw, cv2.MORPH_OPEN, kernel)  # Linien rausholen
 
     ys = np.where(h_lines.sum(axis=1) > 0)[0]
 
-    splits = np.where(np.diff(ys) > 2)[0] + 1
+    splits = np.where(np.diff(ys) > 2)[0] + 1    # Trennt Bereiche
     groups = np.split(ys, splits)
     line_pos = [int(g.mean()) for g in groups]
-
+    
+    # Zwischen zwei Linien ausschneiden
     for i in range(len(line_pos) - 1):
         y1, y2 = line_pos[i], line_pos[i + 1]
         piece = img[y1:y2, :]
 
-        if piece.shape[0] > 40:
+        if piece.shape[0] > 40: # Sehr kleine Lücke ignoreiren
             word_count += 1
             out = f"words/word_{word_count:04}.png"
             cv2.imwrite(out, piece)

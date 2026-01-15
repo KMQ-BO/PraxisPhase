@@ -5,6 +5,7 @@ from PIL import Image
 folder = "Exemplar_1" 
 processed_images = []
 
+# Alle Dateien  durchgehen
 for filename in os.listdir(folder):
     path = folder + "/" + filename
     img = Image.open(path).convert("L") 
@@ -13,17 +14,16 @@ for filename in os.listdir(folder):
     new_width = int(img.width * factor)
     img = img.resize((new_width, 128))
 
-   
     new_name = filename.replace(".png", "_neu.png")
     img.save(new_name)
-
+    
+    # Namen  eintragen
     processed_images.append(new_name)
     print("Fertig bearbeitet:", new_name)
 
-
+# Liste schreiben
 with open("img_list.txt", "w") as f:
     for name in processed_images :
         f.write( name + "\n")
-
 
 print("Fertig!")

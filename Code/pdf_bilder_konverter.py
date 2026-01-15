@@ -6,9 +6,8 @@ os.makedirs(output_dir, exist_ok=True)
 
 pages = convert_from_path("Exemplar_2/004.pdf", dpi=300)
 
+# Jede Seite speichern
 for i, page in enumerate(pages):
     page.save(f"{output_dir}/page_{i+1:03}.png", "PNG")
-
-
 
 print("DONE")
